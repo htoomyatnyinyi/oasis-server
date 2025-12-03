@@ -1,0 +1,44 @@
+
+GET http://localhost:8080/health
+
+###
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+    "email": "hevid47677@docsfy.com",
+    "password": "htoomyat",
+    "username": "hevi",
+    "firstName": "he",
+    "lastName": "vi"
+}
+
+###
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "htoomyat3@mail.com",
+    "password": "htoomyat2"
+}
+
+###
+POST http://localhost:8080/api/auth/verify-email
+Content-Type: application/json
+
+{
+    "token": "a7c575419a2cef3a27e701d55f64156d53e815ee3e73b2177a54b9b48f68c9ae"
+}
+
+###
+
+
+###
+POST http://localhost:8080/api/auth/verify-email?token=a7c575419a2cef3a27e701d55f64156d53e815ee3e73b2177a54b9b48f68c9ae
+Content-Type: application/json
+
+# verify-email?token=a7c575419a2cef3a27e701d55f64156d53e815ee3e73b2177a54b9b48f68c9ae
+###
+GET http://localhost:8080/api/products
+###
+GET http://localhost:8080/api/products/cmiofxus80004m6maaby05v0u

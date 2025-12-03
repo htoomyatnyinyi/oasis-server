@@ -1,0 +1,51 @@
+backend/
+├── src/
+│   ├── config/
+│   │   ├── prisma.ts
+│   │   ├── upload.ts
+│   │   └── stripe.ts
+│   ├── controllers/
+│   │   ├── auth.controller.ts
+│   │   ├── product.controller.ts
+│   │   ├── cart.controller.ts
+│   │   ├── order.controller.ts
+│   │   ├── user.controller.ts
+│   │   ├── review.controller.ts
+│   │   └── address.controller.ts
+│   ├── middlewares/
+│   │   ├── auth.middleware.ts
+│   │   ├── validation.middleware.ts
+│   │   ├── upload.middleware.ts
+│   │   └── error.middleware.ts
+│   ├── routes/
+│   │   ├── auth.routes.ts
+│   │   ├── product.routes.ts
+│   │   ├── cart.routes.ts
+│   │   ├── order.routes.ts
+│   │   ├── user.routes.ts
+│   │   ├── review.routes.ts
+│   │   └── address.routes.ts
+│   ├── services/
+│   │   ├── auth.service.ts
+│   │   ├── product.service.ts
+│   │   ├── cart.service.ts
+│   │   ├── order.service.ts
+│   │   ├── email.service.ts
+│   │   ├── payment.service.ts
+│   │   └── storage.service.ts
+│   ├── utils/
+│   │   ├── validators.ts
+│   │   ├── helpers.ts
+│   │   └── logger.ts
+│   ├── types/
+│   │   └── index.ts
+│   └── app.ts
+├── prisma/
+│   ├── schema.prisma
+│   └── seed.ts
+├── uploads/
+├── .env
+├── .gitignore
+├── package.json
+├── tsconfig.json
+└── README.md
