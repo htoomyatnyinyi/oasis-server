@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import prisma from "../config/prisma.js";
 

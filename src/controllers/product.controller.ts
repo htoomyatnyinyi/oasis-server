@@ -103,6 +103,11 @@ export const getProductById = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
 
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     const product = await prisma.product.findUnique({
       where: { id },
       include: {
@@ -186,6 +191,12 @@ export const getFeaturedProducts = asyncHandler(
 export const getRelatedProducts = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     const { limit = 4 } = req.query;
     const limitNum = parseInt(limit as string);
 
@@ -249,10 +260,12 @@ export const createProduct = asyncHandler(
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       res.status(400);
-      throw new Error(errors.array()[0].msg);
+      throw new Error(errors.array()[0]?.msg);
+      // throw new Error(errors.array()[0].msg);
     }
 
     const { name, description, price, stock, category } = req.body;
+    console.log("Uploaded file:", req.file, req.body);
 
     const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
@@ -279,6 +292,12 @@ export const createProduct = asyncHandler(
 export const updateProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     const updateData = req.body;
 
     // Check if product exists
@@ -321,6 +340,11 @@ export const updateProduct = asyncHandler(
 export const deleteProduct = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     // Check if product exists
     const product = await prisma.product.findUnique({
@@ -385,11 +409,16 @@ export const searchProducts = asyncHandler(
   async (req: Request, res: Response) => {
     const { q: query, limit = 10 } = req.query;
 
+    // if (!query || query.toString().trim() === "") {
+    //   return res.json({
+    //     success: true,
+    //     data: [],
+    //   });
+    // }
+
     if (!query || query.toString().trim() === "") {
-      return res.json({
-        success: true,
-        data: [],
-      });
+      res.status(400);
+      throw new Error("Query is required");
     }
 
     const products = await prisma.product.findMany({

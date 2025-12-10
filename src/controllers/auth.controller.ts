@@ -13,6 +13,7 @@ import { validationResult } from "express-validator";
 import dotenv from "dotenv";
 
 dotenv.config();
+
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 // Generate JWT Token
@@ -39,6 +40,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   const { email, password, username, firstName, lastName, phoneNumber } =
     req.body;
+  console.log(req.body);
 
   // Check if user exists
   const userExists = await prisma.user.findFirst({
@@ -121,6 +123,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 // Login User
 export const login = asyncHandler(async (req: Request, res: Response) => {
   const { email, password } = req.body;
+  console.log(email, password);
 
   // Find user
   const user = await prisma.user.findUnique({

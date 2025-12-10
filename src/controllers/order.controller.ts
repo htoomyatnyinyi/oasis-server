@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import prisma from "../config/prisma.js";
 import Stripe from "stripe";
@@ -191,6 +191,11 @@ export const getOrderById = asyncHandler(
     const userId = (req as any).user.userId;
     const { id } = req.params;
 
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     const order = await prisma.order.findUnique({
       where: { id },
       include: {
@@ -235,6 +240,11 @@ export const updateOrderStatus = asyncHandler(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { status } = req.body;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     const validStatuses = [
       "PENDING",
@@ -309,6 +319,11 @@ export const updateOrderStatus = asyncHandler(
 export const cancelOrder = asyncHandler(async (req: Request, res: Response) => {
   const userId = (req as any).user.userId;
   const { id } = req.params;
+
+  if (!id || id.trim() === "") {
+    res.status(400);
+    throw new Error("Product ID is required");
+  }
 
   const order = await prisma.order.findUnique({
     where: { id },
@@ -423,6 +438,11 @@ export const stripeWebhook = asyncHandler(
       case "payment_intent.succeeded":
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         const orderId = paymentIntent.metadata.orderId;
+
+        if (!orderId || orderId.trim() === "") {
+          res.status(400);
+          throw new Error("Product ID is required");
+        }
 
         // Update order status to PAID
         await prisma.order.update({

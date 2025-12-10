@@ -6,11 +6,28 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
+    "email": "htoomyat3@mail.com",
+    "password": "htoomyat2",
+    "username": "htoomyat3",
+    "firstName": "htoomyat",
+    "lastName": "htoomyat"
+}
+
+# {
+#     "email": "hevid47677@docsfy.com",
+#     "password": "htoomyat",
+#     "username": "hevi",
+#     "firstName": "he",
+#     "lastName": "vi"
+# }
+
+###
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
     "email": "hevid47677@docsfy.com",
-    "password": "htoomyat",
-    "username": "hevi",
-    "firstName": "he",
-    "lastName": "vi"
+    "password": "htoomyat"
 }
 
 ###
@@ -38,7 +55,44 @@ POST http://localhost:8080/api/auth/verify-email?token=a7c575419a2cef3a27e701d55
 Content-Type: application/json
 
 # verify-email?token=a7c575419a2cef3a27e701d55f64156d53e815ee3e73b2177a54b9b48f68c9ae
+
+
+###
+GET http://localhost:8080/api/auth/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzY1MzU4NjMwLCJleHAiOjE3NjU5NjM0MzB9.ip6WTiIeMv9BHQHUXJGl7PITHdTfv5yGidxV7UGsMZc
+###
+POST http://localhost:8080/api/auth/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUzNTU2NjAsImV4cCI6MTc2NTk2MDQ2MH0.VeiqhorWtCWoGHSCzpjd-u1rw-OIQaahoeBqQMy6H88
+
+###
+POST http://localhost:8080/api/auth/forgot-password
+Content-Type: application/json
+
+
+#Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUzNTU2NjAsImV4cCI6MTc2NTk2MDQ2MH0.VeiqhorWtCWoGHSCzpjd-u1rw-OIQaahoeBqQMy6H88
+
 ###
 GET http://localhost:8080/api/products
+
 ###
-GET http://localhost:8080/api/products/cmiofxus80004m6maaby05v0u
+GET http://localhost:8080/api/products/cmiygb7zq0008iaijmezp4e93/related
+
+###
+GET http://localhost:8080/api/products/featured
+
+###
+GET http://localhost:8080/api/products/
+###
+POST http://localhost:8080/api/products/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzY1MzU4NjMwLCJleHAiOjE3NjU5NjM0MzB9.ip6WTiIeMv9BHQHUXJGl7PITHdTfv5yGidxV7UGsMZc
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUzNTU2NjAsImV4cCI6MTc2NTk2MDQ2MH0.VeiqhorWtCWoGHSCzpjd-u1rw-OIQaahoeBqQMy6H88
+
+
+{
+    "name": "test1",
+    "description": "test description",
+    "price": 10,
+    "stock": 100
+}

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import prisma from "../config/prisma.js";
 
@@ -11,6 +11,11 @@ export const getProductReviews = asyncHandler(
     const pageNum = parseInt(page as string);
     const limitNum = parseInt(limit as string);
     const skip = (pageNum - 1) * limitNum;
+
+    if (!productId || productId.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     // Check if product exists
     const product = await prisma.product.findUnique({
@@ -149,6 +154,11 @@ export const updateReview = asyncHandler(
     const { id } = req.params;
     const { rating, comment } = req.body;
 
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     // Find review
     const review = await prisma.review.findUnique({
       where: { id },
@@ -197,6 +207,11 @@ export const deleteReview = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
     const { id } = req.params;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     // Find review
     const review = await prisma.review.findUnique({

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 import prisma from "../config/prisma.js";
 
@@ -148,6 +148,11 @@ export const updateCartItem = asyncHandler(
     const { itemId } = req.params;
     const { quantity } = req.body;
 
+    if (!itemId || itemId.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     if (quantity < 1) {
       res.status(400);
       throw new Error("Quantity must be at least 1");
@@ -222,6 +227,11 @@ export const removeCartItem = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
     const { itemId } = req.params;
+
+    if (!itemId || itemId.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     // Get cart item
     const cartItem = await prisma.cartItem.findUnique({

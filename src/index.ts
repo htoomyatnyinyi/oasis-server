@@ -25,19 +25,19 @@ const app: Application = express();
 
 // Security middleware
 app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
-
 // app.use(
 //   cors({
-//     origin: "*",
+//     origin: process.env.CLIENT_URL,
 //     credentials: true,
 //   })
 // );
+
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
 // // Rate limiting
 const limiter = rateLimit({

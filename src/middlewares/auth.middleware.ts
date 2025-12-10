@@ -14,6 +14,7 @@ export const authenticate = asyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     let token = req.body; // check here .. let token;
 
+    // console.log(token, req.body, "check token at middleware");
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")
