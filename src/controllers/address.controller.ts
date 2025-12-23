@@ -69,6 +69,11 @@ export const updateAddress = asyncHandler(
     const { id } = req.params;
     const updateData = req.body;
 
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
+
     // Find address
     const address = await prisma.address.findUnique({
       where: { id },
@@ -111,6 +116,11 @@ export const deleteAddress = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
     const { id } = req.params;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     // Find address
     const address = await prisma.address.findUnique({
@@ -155,6 +165,11 @@ export const setDefaultAddress = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
     const { id } = req.params;
+
+    if (!id || id.trim() === "") {
+      res.status(400);
+      throw new Error("Product ID is required");
+    }
 
     // Find address
     const address = await prisma.address.findUnique({
