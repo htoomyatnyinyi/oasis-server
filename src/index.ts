@@ -12,7 +12,8 @@ import authRoutes from "./routes/auth.routes.ts";
 import productRoutes from "./routes/product.routes.ts";
 // import cartRoutes from "./routes/cart.routes";
 // import orderRoutes from "./routes/order.routes";
-// import userRoutes from "./routes/user.routes";
+// import userRoutes from "./routes/user.routes.ts";
+import userRoutes from "./routes/user.routes.ts";
 // import reviewRoutes from "./routes/review.routes";
 // import addressRoutes from "./routes/address.routes";
 
@@ -76,7 +77,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 // app.use("/api/cart", cartRoutes);
 // app.use("/api/orders", orderRoutes);
-// app.use("/api/users", userRoutes);
+app.use("/api/users", userRoutes);
 // app.use("/api/reviews", reviewRoutes);
 // app.use("/api/addresses", addressRoutes);
 

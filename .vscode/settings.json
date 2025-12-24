@@ -1,0 +1,17 @@
+{
+  "rest-client.decodeEscapedUnicodeCharacters": false,
+  "rest-client.environmentVariables": {
+    "$shared": {},
+    "developemnt": {
+      "hostname": "http://localhost:8080"
+    },
+    "user": {
+      "hostname": "http://localhost:8080",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U"
+    },
+    "admin": {
+      "hostname": "http://localhost:8080",
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqczNwdzUwMDA0OXhtYWg3dnhoMHVyIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzY2NTY2NjY1LCJleHAiOjE3NjcxNzE0NjV9.IDTVK7gBAdiT_XdlRe8LEUohXFl7OvAY6ploqe9iHEY"
+    }
+  }
+}

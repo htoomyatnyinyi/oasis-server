@@ -1,32 +1,39 @@
 
-GET http://localhost:8080/health
+GET {{hostname}}/health
 
 ###
-POST http://localhost:8080/api/auth/register
+POST {{hostname}}/api/auth/register
 Content-Type: application/json
 
+# {
+#     "email": "htoomyat3@mail.com",
+#     "password": "htoomyat2",
+#     "username": "htoomyat3",
+#     "firstName": "htoomyat",
+#     "lastName": "htoomyat"
+# }
+
 {
-    "email": "htoomyat3@mail.com",
-    "password": "htoomyat2",
-    "username": "htoomyat3",
-    "firstName": "htoomyat",
-    "lastName": "htoomyat"
+    "email": "sifaco6871@roratu.com",
+    "password": "htoomyat",
+    "username": "sifa",
+    "firstName": "si",
+    "lastName": "fa"
 }
 
-# {
-#     "email": "hevid47677@docsfy.com",
-#     "password": "htoomyat",
-#     "username": "hevi",
-#     "firstName": "he",
-#     "lastName": "vi"
-# }
+###
+# Or copy and paste this link in your browser:
+
+# exp://192.168.1.100:19000/verify-email?token=ec54813a7d1184c7856a03b9d5f2cc79cf1e0923e535b55a14abac1adb2246c1
+
+# This link will expire in 24 hours.
 
 ###
 POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "hevid47677@docsfy.com",
+    "email": "sifaco6871@roratu.com",
     "password": "htoomyat"
 }
 
@@ -44,7 +51,7 @@ POST http://localhost:8080/api/auth/verify-email
 Content-Type: application/json
 
 {
-    "token": "a7c575419a2cef3a27e701d55f64156d53e815ee3e73b2177a54b9b48f68c9ae"
+    "token": "ec54813a7d1184c7856a03b9d5f2cc79cf1e0923e535b55a14abac1adb2246c1"
 }
 
 ###
@@ -59,21 +66,21 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzY1MzU4NjMwLCJleHAiOjE3NjU5NjM0MzB9.ip6WTiIeMv9BHQHUXJGl7PITHdTfv5yGidxV7UGsMZc
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+
 ###
 POST http://localhost:8080/api/auth/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUzNTU2NjAsImV4cCI6MTc2NTk2MDQ2MH0.VeiqhorWtCWoGHSCzpjd-u1rw-OIQaahoeBqQMy6H88
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
 
 ###
 POST http://localhost:8080/api/auth/forgot-password
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
 
-
-#Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUzNTU2NjAsImV4cCI6MTc2NTk2MDQ2MH0.VeiqhorWtCWoGHSCzpjd-u1rw-OIQaahoeBqQMy6H88
-
-###
-GET http://localhost:8080/api/products
+{
+    "email": "htoomyat3@mail.com"
+}
 
 ###
 GET http://localhost:8080/api/products/cmiygb7zq0008iaijmezp4e93/related
@@ -83,16 +90,77 @@ GET http://localhost:8080/api/products/featured
 
 ###
 GET http://localhost:8080/api/products/
+
 ###
 POST http://localhost:8080/api/products/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzY1MzU4NjMwLCJleHAiOjE3NjU5NjM0MzB9.ip6WTiIeMv9BHQHUXJGl7PITHdTfv5yGidxV7UGsMZc
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWl5aTh5d2QwMDAwd21pajBwbzh3MnkxIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjUzNTU2NjAsImV4cCI6MTc2NTk2MDQ2MH0.VeiqhorWtCWoGHSCzpjd-u1rw-OIQaahoeBqQMy6H88
+Authorization: Bearer {{token}}
 
-
-{
+{ 
     "name": "test1",
     "description": "test description",
-    "price": 10,
+    "price": 10.99,
+    "stock": 100
+}
+
+###
+POST http://localhost:8080/api/products/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ 
+    "name": "test1",
+    "description": "test description",
+    "price": 10.99,
+    "stock": 100
+}
+
+
+
+###
+POST http://localhost:8080/api/products/upload
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="test-image.jpg"
+Content-Type: image/jpeg
+
+< ./images/test-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+###
+GET {{hostname}}/api/users/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+###
+GET {{hostname}}/api/users/stats
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+###
+GET {{hostname}}/api/users/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+###
+GET {{hostname}}/api/users/reviews
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+
+###
+GET {{hostname}}/api/users/export-data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+
+###
+GET {{hostname}}/api/users/check-username?q='fj'
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+
+###
+Content-Type: application/json
+
+###
+POST http://localhost:8080/api/products/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{ 
+    "name": "test1",
+    "description": "test description",
+    "price": 10.99,
     "stock": 100
 }
