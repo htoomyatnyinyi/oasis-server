@@ -10,7 +10,7 @@ import dotenv from "dotenv";
 // Routes
 import authRoutes from "./routes/auth.routes.ts";
 import productRoutes from "./routes/product.routes.ts";
-// import cartRoutes from "./routes/cart.routes";
+import cartRoutes from "./routes/cart.routes.ts";
 // import orderRoutes from "./routes/order.routes";
 // import userRoutes from "./routes/user.routes.ts";
 import userRoutes from "./routes/user.routes.ts";
@@ -75,7 +75,7 @@ app.get("/health", (req: Request, res: Response) => {
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
-// app.use("/api/cart", cartRoutes);
+app.use("/api/cart", cartRoutes);
 // app.use("/api/orders", orderRoutes);
 app.use("/api/users", userRoutes);
 // app.use("/api/reviews", reviewRoutes);

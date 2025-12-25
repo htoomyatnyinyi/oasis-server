@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import prisma from "../config/prisma.js";
+import prisma from "../config/prisma.ts";
 
 // Get user's cart
 export const getCart = asyncHandler(async (req: Request, res: Response) => {
