@@ -115,19 +115,51 @@ model CartItem {
   product   Product  @relation(fields: [productId], references: [id])
 }
 
+// model Order {
+//   id              String      @id @default(cuid())
+//   userId          String
+//   status          OrderStatus @default(PENDING)
+//   totalAmount     Decimal     @db.Decimal(10, 2)
+//   shippingAddress Json?
+//   createdAt       DateTime    @default(now())
+//   updatedAt       DateTime    @updatedAt
+//   items           OrderItem[]
+//   user            User        @relation(fields: [userId], references: [id])
+  
+//   addressId       String?
+//   address         Address?    @relation("AddressToOrder", fields: [addressId], references: [id])  // Named relation
+// }
+
 model Order {
   id              String      @id @default(cuid())
   userId          String
   status          OrderStatus @default(PENDING)
   totalAmount     Decimal     @db.Decimal(10, 2)
+  subtotal        Decimal     @db.Decimal(10, 2)  // Added
+  taxAmount       Decimal     @db.Decimal(10, 2)  // Added
+  shippingAmount  Decimal     @db.Decimal(10, 2)  // Added
+  discountAmount  Decimal     @db.Decimal(10, 2)  // Added
+  shippingMethod  String?     // "standard", "express", "overnight"
+  paymentMethod   String?     // "card", "paypal", "cod"
+  paymentStatus   String      @default("pending") // "pending", "paid", "failed"
+  paymentIntentId String?     // Stripe payment intent ID
+  trackingNumber  String?
+  estimatedDelivery DateTime?
   shippingAddress Json?
+  billingAddress  Json?       // Added
+  notes           String?     @db.Text
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   items           OrderItem[]
   user            User        @relation(fields: [userId], references: [id])
-  
   addressId       String?
-  address         Address?    @relation("AddressToOrder", fields: [addressId], references: [id])  // Named relation
+  address         Address?    @relation("AddressToOrder", fields: [addressId], references: [id])
+  
+  OrderCoupons   OrderCoupon[]
+  
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model OrderItem {
@@ -142,6 +174,55 @@ model OrderItem {
   order       Order    @relation(fields: [orderId], references: [id])
   product     Product? @relation(fields: [productId], references: [id])
 }
+
+
+// Add Coupon model for discounts
+model Coupon {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  description String?
+  discountType String  // "percentage", "fixed"
+  discountValue Decimal @db.Decimal(10, 2)
+  minPurchase  Decimal? @db.Decimal(10, 2)
+  maxDiscount  Decimal? @db.Decimal(10, 2)
+  startDate    DateTime
+  endDate      DateTime
+  usageLimit   Int?
+  usedCount    Int     @default(0)
+  isActive     Boolean @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  orders       OrderCoupon[]
+
+  @@index([code])
+}
+
+
+// Add Order-Coupon relation table
+model OrderCoupon {
+  id        String   @id @default(cuid())
+  orderId   String
+  couponId  String
+  discountAmount Decimal @db.Decimal(10, 2)
+  order     Order    @relation(fields: [orderId], references: [id])
+  coupon    Coupon   @relation(fields: [couponId], references: [id])
+  
+  @@unique([orderId, couponId])
+}
+
+// Add ShippingMethod model
+model ShippingMethod {
+  id            String   @id @default(cuid())
+  name          String   // "Standard", "Express", "Overnight"
+  description   String?
+  price         Decimal  @db.Decimal(10, 2)
+  deliveryDays  Int
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
 
 model ProcessedWebhookEvent {
   id        String   @id

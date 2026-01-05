@@ -80,6 +80,7 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/users", userRoutes);
 // app.use("/api/reviews", reviewRoutes);
 // app.use("/api/addresses", addressRoutes);
+// app.use("/api/checkout", checkoutRoutes); // Add checkout routes
 
 // // 404 handler
 // app.use("*", (req: Request, res: Response) => {
