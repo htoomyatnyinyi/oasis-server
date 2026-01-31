@@ -1,11 +1,11 @@
 import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import prisma from "../config/prisma";
+import prisma from "../config/prisma.ts";
 import Stripe from "stripe";
 import {
   sendOrderConfirmationEmail,
   sendOrderShippedEmail,
-} from "../services/email.service";
+} from "../services/email.service.ts";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -68,7 +68,7 @@ export const calculateCheckoutTotals = asyncHandler(
       if (item.product.stock < item.quantity) {
         res.status(400);
         throw new Error(
-          `Insufficient stock for ${item.product.name}. Only ${item.product.stock} available`
+          `Insufficient stock for ${item.product.name}. Only ${item.product.stock} available`,
         );
       }
 
@@ -92,7 +92,7 @@ export const calculateCheckoutTotals = asyncHandler(
         // Add more states/countries
       };
 
-      const state = shippingAddress.state;
+      const state = shippingAddress.state as string;
       const taxRate = taxRates[state] || 0.07; // Default 7%
       taxAmount = subtotal * taxRate;
     }
@@ -117,7 +117,7 @@ export const calculateCheckoutTotals = asyncHandler(
       // Calculate estimated delivery date
       const deliveryDate = new Date();
       deliveryDate.setDate(
-        deliveryDate.getDate() + shippingMethod.deliveryDays
+        deliveryDate.getDate() + shippingMethod.deliveryDays,
       );
       estimatedDelivery = deliveryDate;
     }
@@ -147,7 +147,7 @@ export const calculateCheckoutTotals = asyncHandler(
         if (coupon.minPurchase && subtotal < Number(coupon.minPurchase)) {
           res.status(400);
           throw new Error(
-            `Minimum purchase of $${coupon.minPurchase} required for this coupon`
+            `Minimum purchase of $${coupon.minPurchase} required for this coupon`,
           );
         }
 
@@ -188,15 +188,15 @@ export const calculateCheckoutTotals = asyncHandler(
           discountAmount: parseFloat(discountAmount.toFixed(2)),
           totalAmount: parseFloat(totalAmount.toFixed(2)),
         },
-        shippingAddress,
-        billingAddress: useShippingAsBilling ? shippingAddress : null,
+        shippingAddress: shippingAddress || {},
+        billingAddress: (useShippingAsBilling ? shippingAddress : null) || {},
         shippingMethod,
         estimatedDelivery,
         coupon,
         availableShippingMethods: shippingMethods,
       },
     });
-  }
+  },
 );
 
 // Validate coupon
@@ -250,7 +250,7 @@ export const validateCoupon = asyncHandler(
       message: "Coupon is valid",
       data: coupon,
     });
-  }
+  },
 );
 
 // Create order (checkout)
@@ -265,6 +265,12 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
     notes,
     saveBillingAddress,
   } = req.body;
+  if (!shippingAddressId || !shippingMethodId || !paymentMethod) {
+    res.status(400);
+    throw new Error(
+      "Shipping address, shipping method, and payment method are required",
+    );
+  }
 
   // Step 1: Get user cart
   const cart = await prisma.cart.findUnique({
@@ -286,6 +292,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   // Step 2: Get shipping address
   const shippingAddress = await prisma.address.findUnique({
     where: { id: shippingAddressId },
+    include: { user: true },
   });
 
   if (!shippingAddress) {
@@ -301,9 +308,9 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   // Step 3: Get billing address
   let billingAddress = shippingAddress; // Default to shipping address
   if (billingAddressId && billingAddressId !== shippingAddressId) {
-    billingAddress = await prisma.address.findUnique({
+    billingAddress = (await prisma.address.findUnique({
       where: { id: billingAddressId },
-    });
+    })) as any;
 
     if (!billingAddress) {
       res.status(404);
@@ -328,13 +335,13 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
 
   // Step 5: Calculate totals
   let subtotal = 0;
-  const orderItems = [];
+  const orderItems: any[] = [];
 
   for (const item of cart.items) {
     if (item.product.stock < item.quantity) {
       res.status(400);
       throw new Error(
-        `Insufficient stock for ${item.product.name}. Only ${item.product.stock} available`
+        `Insufficient stock for ${item.product.name}. Only ${item.product.stock} available`,
       );
     }
 
@@ -355,7 +362,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
     NY: 0.08875,
     TX: 0.0625,
   };
-  const state = shippingAddress.state;
+  const state = shippingAddress.state as string;
   const taxRate = taxRates[state] || 0.07;
   const taxAmount = subtotal * taxRate;
   const shippingAmount = Number(shippingMethod.price);
@@ -402,11 +409,11 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   // Step 6: Calculate estimated delivery
   const estimatedDelivery = new Date();
   estimatedDelivery.setDate(
-    estimatedDelivery.getDate() + shippingMethod.deliveryDays
+    estimatedDelivery.getDate() + shippingMethod.deliveryDays,
   );
 
   // Step 7: Create order in database
-  const order = await prisma.$transaction(async (tx) => {
+  const order = await prisma.$transaction(async (tx: any) => {
     // Create order
     const newOrder = await tx.order.create({
       data: {
@@ -428,7 +435,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
           postalCode: shippingAddress.postalCode,
         },
         billingAddress:
-          billingAddressId !== shippingAddressId
+          billingAddressId && billingAddressId !== shippingAddressId
             ? {
                 street: billingAddress.street,
                 city: billingAddress.city,
@@ -436,7 +443,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
                 country: billingAddress.country,
                 postalCode: billingAddress.postalCode,
               }
-            : null,
+            : undefined,
         notes,
         items: {
           create: orderItems,
@@ -465,7 +472,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
 
     // Save coupon usage
     if (coupon) {
-      await tx.orderCoupon.create({
+      await (tx as any).orderCoupon.create({
         data: {
           orderId: newOrder.id,
           couponId: coupon.id,
@@ -507,17 +514,17 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
       },
       description: `Order #${order.id}`,
       shipping: shippingAddress
-        ? {
+        ? ({
             address: {
               line1: shippingAddress.street,
               city: shippingAddress.city,
-              state: shippingAddress.state,
+              state: shippingAddress.state || undefined,
               country: shippingAddress.country,
               postal_code: shippingAddress.postalCode,
             },
-            name: `${shippingAddress.user.firstName} ${shippingAddress.user.lastName}`.trim(),
-            phone: shippingAddress.user.phoneNumber,
-          }
+            name: `${(shippingAddress as any).user.firstName} ${(shippingAddress as any).user.lastName}`.trim(),
+            phone: (shippingAddress as any).user.phoneNumber || undefined,
+          } as any)
         : undefined,
     });
 
@@ -578,7 +585,7 @@ export const getShippingMethods = asyncHandler(
       // Example: No express shipping to remote areas
       if (address.country === "Remote Country") {
         filteredMethods = shippingMethods.filter(
-          (method) => method.name !== "Express"
+          (method: any) => method.name !== "Express",
         );
       }
     }
@@ -587,7 +594,7 @@ export const getShippingMethods = asyncHandler(
       success: true,
       data: filteredMethods,
     });
-  }
+  },
 );
 
 // Get checkout summary
@@ -622,7 +629,7 @@ export const getCheckoutSummary = asyncHandler(
     }
 
     // Calculate subtotal
-    const subtotal = cart.items.reduce((sum, item) => {
+    const subtotal = cart.items.reduce((sum: number, item: any) => {
       return sum + Number(item.product.price) * item.quantity;
     }, 0);
 
@@ -631,7 +638,10 @@ export const getCheckoutSummary = asyncHandler(
       data: {
         cart: {
           items: cart.items,
-          itemCount: cart.items.reduce((sum, item) => sum + item.quantity, 0),
+          itemCount: cart.items.reduce(
+            (sum: number, item: any) => sum + item.quantity,
+            0,
+          ),
         },
         addresses,
         defaultShippingMethod,
@@ -645,7 +655,7 @@ export const getCheckoutSummary = asyncHandler(
         },
       },
     });
-  }
+  },
 );
 
 // Confirm payment
@@ -684,14 +694,14 @@ export const confirmPayment = asyncHandler(
       message: "Payment confirmed successfully",
       data: updatedOrder,
     });
-  }
+  },
 );
 
 // Get order by ID for checkout completion
 export const getOrderDetails = asyncHandler(
   async (req: Request, res: Response) => {
     const userId = (req as any).user.userId;
-    const { id } = req.params;
+    const { id }: any = req.params;
 
     const order = await prisma.order.findUnique({
       where: { id },
@@ -725,7 +735,7 @@ export const getOrderDetails = asyncHandler(
       success: true,
       data: order,
     });
-  }
+  },
 );
 
 // Cancel order during checkout
@@ -785,5 +795,5 @@ export const cancelCheckoutOrder = asyncHandler(
       message: "Order cancelled successfully",
       data: cancelledOrder,
     });
-  }
+  },
 );

@@ -40,7 +40,7 @@ export const register = asyncHandler(async (req: Request, res: Response) => {
 
   const { email, password, username, firstName, lastName, phoneNumber } =
     req.body;
-  console.log(req.body);
+  console.log(req.body, 'at register');
 
   // Check if user exists
   const userExists = await prisma.user.findFirst({

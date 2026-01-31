@@ -8,8 +8,8 @@ import {
   cancelOrder,
   createPaymentIntent,
   stripeWebhook,
-} from "../controllers/order.controller";
-import { authenticate, authorize } from "../middlewares/auth.middleware";
+} from "../controllers/order.controller.ts";
+import { authenticate, authorize } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 
@@ -25,7 +25,7 @@ router.post(
     body("addressId").notEmpty().withMessage("Address ID is required"),
     body("paymentMethod").notEmpty().withMessage("Payment method is required"),
   ],
-  createOrder
+  createOrder,
 );
 
 router.post("/payment-intent", createPaymentIntent);
@@ -43,7 +43,7 @@ router.put(
       .isIn(["PENDING", "PAID", "SHIPPED", "DELIVERED", "CANCELLED"])
       .withMessage("Invalid status"),
   ],
-  updateOrderStatus
+  updateOrderStatus,
 );
 
 export default router;

@@ -1,6 +1,6 @@
 import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import prisma from "../config/prisma.js";
+import prisma from "../config/prisma.ts";
 
 // Get user addresses
 export const getAddresses = asyncHandler(
@@ -18,7 +18,7 @@ export const getAddresses = asyncHandler(
       success: true,
       data: addresses,
     });
-  }
+  },
 );
 
 // Create address
@@ -59,7 +59,7 @@ export const createAddress = asyncHandler(
       message: "Address added successfully",
       data: address,
     });
-  }
+  },
 );
 
 // Update address
@@ -108,7 +108,7 @@ export const updateAddress = asyncHandler(
       message: "Address updated successfully",
       data: updatedAddress,
     });
-  }
+  },
 );
 
 // Delete address
@@ -157,7 +157,7 @@ export const deleteAddress = asyncHandler(
       success: true,
       message: "Address deleted successfully",
     });
-  }
+  },
 );
 
 // Set default address
@@ -204,5 +204,5 @@ export const setDefaultAddress = asyncHandler(
       message: "Default address updated",
       data: updatedAddress,
     });
-  }
+  },
 );

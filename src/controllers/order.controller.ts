@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import prisma from "../config/prisma.js";
+import prisma from "../config/prisma.ts";
 import Stripe from "stripe";
-import { sendOrderConfirmationEmail } from "../services/email.service";
+import { sendOrderConfirmationEmail } from "../services/email.service.ts";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -53,7 +53,7 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
     if (item.product.stock < item.quantity) {
       res.status(400);
       throw new Error(
-        `Insufficient stock for ${item.product.name}. Only ${item.product.stock} available`
+        `Insufficient stock for ${item.product.name}. Only ${item.product.stock} available`,
       );
     }
 
@@ -69,15 +69,19 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   }
 
   // Create order
-  const order = await prisma.order.create({
+  const order: any = await prisma.order.create({
     data: {
-      userId,
-      addressId,
+      user: { connect: { id: userId } },
+      address: { connect: { id: addressId } },
       totalAmount,
+      subtotal: totalAmount,
+      taxAmount: 0,
+      shippingAmount: 0,
+      discountAmount: 0,
       shippingAddress: {
         street: address.street,
         city: address.city,
-        state: address.state,
+        state: (address as any).state,
         country: address.country,
         postalCode: address.postalCode,
       },
@@ -129,7 +133,11 @@ export const createOrder = asyncHandler(async (req: Request, res: Response) => {
   }
 
   // Send confirmation email
-  await sendOrderConfirmationEmail(order.user.email, order);
+  await sendOrderConfirmationEmail(
+    (order as any).user.email,
+    order as any,
+    (order as any).user,
+  );
 
   res.status(201).json({
     success: true,
@@ -232,7 +240,7 @@ export const getOrderById = asyncHandler(
       success: true,
       data: order,
     });
-  }
+  },
 );
 
 // Update order status (Admin only)
@@ -312,7 +320,7 @@ export const updateOrderStatus = asyncHandler(
       message: "Order status updated",
       data: updatedOrder,
     });
-  }
+  },
 );
 
 // Cancel order (User)
@@ -412,7 +420,7 @@ export const createPaymentIntent = asyncHandler(
         order,
       },
     });
-  }
+  },
 );
 
 // Stripe webhook handler
@@ -426,7 +434,7 @@ export const stripeWebhook = asyncHandler(
       event = stripe.webhooks.constructEvent(
         req.body,
         sig,
-        process.env.STRIPE_WEBHOOK_SECRET!
+        process.env.STRIPE_WEBHOOK_SECRET!,
       );
     } catch (err: any) {
       res.status(400).send(`Webhook Error: ${err.message}`);
@@ -461,5 +469,5 @@ export const stripeWebhook = asyncHandler(
     }
 
     res.json({ received: true });
-  }
+  },
 );

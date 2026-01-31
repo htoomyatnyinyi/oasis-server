@@ -6,8 +6,8 @@ import {
   updateAddress,
   deleteAddress,
   setDefaultAddress,
-} from "../controllers/address.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+} from "../controllers/address.controller.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 
@@ -28,7 +28,7 @@ router.post(
     body("state").optional().notEmpty(),
     body("isDefault").optional().isBoolean(),
   ],
-  createAddress
+  createAddress,
 );
 
 // Update address
@@ -48,7 +48,7 @@ router.put(
     body("state").optional().notEmpty(),
     body("isDefault").optional().isBoolean(),
   ],
-  updateAddress
+  updateAddress,
 );
 
 // Delete address

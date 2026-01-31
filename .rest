@@ -1,5 +1,5 @@
-
-GET {{hostname}}/health
+@hostname=http://localhost:8080
+@token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWsyNTJyaTMwMDAwNW95aTRmMTNldjlsIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzY3Njg0MTI1LCJleHAiOjE3NjgyODg5MjV9.8Cm0XO9_S7Q8YODH1O8bkwTVhmdwibuglVZemlzf8ZY
 
 ###
 POST {{hostname}}/api/auth/register
@@ -14,9 +14,9 @@ Content-Type: application/json
 # }
 
 {
-    "email": "sifaco6871@roratu.com",
-    "password": "htoomyat",
-    "username": "sifa",
+    "email": "sifaco16871@roratu.com",
+    "password": "htoomyat1",
+    "username": "sikkfa",
     "firstName": "si",
     "lastName": "fa"
 }
@@ -33,8 +33,16 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-    "email": "sifaco6871@roratu.com",
-    "password": "htoomyat"
+    "email": "admin@example.com",
+    "password": "admin123"
+}
+###
+POST http://192.168.1.143:8080/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@example.com",
+    "password": "admin123"
 }
 
 ###
@@ -51,7 +59,7 @@ POST http://localhost:8080/api/auth/verify-email
 Content-Type: application/json
 
 {
-    "token": "ec54813a7d1184c7856a03b9d5f2cc79cf1e0923e535b55a14abac1adb2246c1"
+    "token": "a7c575419a2cef3a27e701d55f64156d53e815ee3e73b2177a54b9b48f68c9ae"
 }
 
 ###
@@ -66,18 +74,17 @@ Content-Type: application/json
 
 ###
 GET http://localhost:8080/api/auth/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+Authorization: Bearer {{token}}
 
 ###
 POST http://localhost:8080/api/auth/logout
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
+Authorization: Bearer {{token}}
 
 ###
 POST http://localhost:8080/api/auth/forgot-password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjbWpqcmlhY2IwMDAwOXhtYTFna21oNzhqIiwicm9sZSI6IlVTRVIiLCJpYXQiOjE3NjY1NjU4OTAsImV4cCI6MTc2NzE3MDY5MH0.iy4F4aMJ8BrXa1xcKDWwUANQQztyNbp74u-kRLfSF7U
-
+Authorization: Bearer {{token}}
 {
     "email": "htoomyat3@mail.com"
 }

@@ -29,6 +29,7 @@ const registerValidation = [
   body("firstName").optional().notEmpty(),
   body("lastName").optional().notEmpty(),
 ];
+console.log(registerValidation , 'data for signup valid')
 
 const loginValidation = [
   body("email").isEmail().withMessage("Please enter a valid email"),
@@ -36,7 +37,7 @@ const loginValidation = [
 ];
 
 // Public routes
-router.post("/register", registerValidation, register);
+router.post("/register", register);
 router.post("/login", loginValidation, login);
 router.post("/google", googleAuth);
 router.post("/verify-email", verifyEmail);

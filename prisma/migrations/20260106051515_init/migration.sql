@@ -118,7 +118,19 @@ CREATE TABLE "Order" (
     "userId" TEXT NOT NULL,
     "status" "OrderStatus" NOT NULL DEFAULT 'PENDING',
     "totalAmount" DECIMAL(10,2) NOT NULL,
+    "subtotal" DECIMAL(10,2) NOT NULL,
+    "taxAmount" DECIMAL(10,2) NOT NULL,
+    "shippingAmount" DECIMAL(10,2) NOT NULL,
+    "discountAmount" DECIMAL(10,2) NOT NULL,
+    "shippingMethod" TEXT,
+    "paymentMethod" TEXT,
+    "paymentStatus" TEXT NOT NULL DEFAULT 'pending',
+    "paymentIntentId" TEXT,
+    "trackingNumber" TEXT,
+    "estimatedDelivery" TIMESTAMP(3),
     "shippingAddress" JSONB,
+    "billingAddress" JSONB,
+    "notes" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "addressId" TEXT,
@@ -138,6 +150,50 @@ CREATE TABLE "OrderItem" (
     "productId" TEXT,
 
     CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Coupon" (
+    "id" TEXT NOT NULL,
+    "code" TEXT NOT NULL,
+    "description" TEXT,
+    "discountType" TEXT NOT NULL,
+    "discountValue" DECIMAL(10,2) NOT NULL,
+    "minPurchase" DECIMAL(10,2),
+    "maxDiscount" DECIMAL(10,2),
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "usageLimit" INTEGER,
+    "usedCount" INTEGER NOT NULL DEFAULT 0,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Coupon_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "OrderCoupon" (
+    "id" TEXT NOT NULL,
+    "orderId" TEXT NOT NULL,
+    "couponId" TEXT NOT NULL,
+    "discountAmount" DECIMAL(10,2) NOT NULL,
+
+    CONSTRAINT "OrderCoupon_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ShippingMethod" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT,
+    "price" DECIMAL(10,2) NOT NULL,
+    "deliveryDays" INTEGER NOT NULL,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ShippingMethod_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -165,6 +221,24 @@ CREATE UNIQUE INDEX "EmailVerificationToken_token_key" ON "EmailVerificationToke
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Cart_userId_key" ON "Cart"("userId");
+
+-- CreateIndex
+CREATE INDEX "Order_userId_idx" ON "Order"("userId");
+
+-- CreateIndex
+CREATE INDEX "Order_status_idx" ON "Order"("status");
+
+-- CreateIndex
+CREATE INDEX "Order_createdAt_idx" ON "Order"("createdAt");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Coupon_code_key" ON "Coupon"("code");
+
+-- CreateIndex
+CREATE INDEX "Coupon_code_idx" ON "Coupon"("code");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "OrderCoupon_orderId_couponId_key" ON "OrderCoupon"("orderId", "couponId");
 
 -- AddForeignKey
 ALTER TABLE "Address" ADD CONSTRAINT "Address_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -201,3 +275,9 @@ ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("or
 
 -- AddForeignKey
 ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderCoupon" ADD CONSTRAINT "OrderCoupon_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OrderCoupon" ADD CONSTRAINT "OrderCoupon_couponId_fkey" FOREIGN KEY ("couponId") REFERENCES "Coupon"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

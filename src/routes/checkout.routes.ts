@@ -9,8 +9,8 @@ import {
   confirmPayment,
   getOrderDetails,
   cancelCheckoutOrder,
-} from "../controllers/checkout.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+} from "../controllers/checkout.controller.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 
@@ -29,14 +29,14 @@ router.post(
     body("couponCode").optional().isString(),
     body("useShippingAsBilling").optional().isBoolean(),
   ],
-  calculateCheckoutTotals
+  calculateCheckoutTotals,
 );
 
 // Validate coupon
 router.post(
   "/validate-coupon",
   [body("code").notEmpty().withMessage("Coupon code is required")],
-  validateCoupon
+  validateCoupon,
 );
 
 // Get available shipping methods
@@ -60,7 +60,7 @@ router.post(
     body("notes").optional().isString(),
     body("saveBillingAddress").optional().isBoolean(),
   ],
-  createOrder
+  createOrder,
 );
 
 // Confirm payment (for card payments)
@@ -72,7 +72,7 @@ router.post(
       .notEmpty()
       .withMessage("Payment intent ID is required"),
   ],
-  confirmPayment
+  confirmPayment,
 );
 
 // Get order details for checkout completion
@@ -82,7 +82,7 @@ router.get("/order/:id", getOrderDetails);
 router.post(
   "/cancel-order",
   [body("orderId").notEmpty().withMessage("Order ID is required")],
-  cancelCheckoutOrder
+  cancelCheckoutOrder,
 );
 
 export default router;

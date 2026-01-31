@@ -5,8 +5,8 @@ import {
   createReview,
   updateReview,
   deleteReview,
-} from "../controllers/review.controller";
-import { authenticate } from "../middlewares/auth.middleware";
+} from "../controllers/review.controller.ts";
+import { authenticate } from "../middlewares/auth.middleware.ts";
 
 const router = Router();
 
@@ -29,7 +29,7 @@ router.post(
       .isLength({ max: 1000 })
       .withMessage("Comment must be less than 1000 characters"),
   ],
-  createReview
+  createReview,
 );
 
 // Update review
@@ -45,7 +45,7 @@ router.put(
       .isLength({ max: 1000 })
       .withMessage("Comment must be less than 1000 characters"),
   ],
-  updateReview
+  updateReview,
 );
 
 // Delete review
